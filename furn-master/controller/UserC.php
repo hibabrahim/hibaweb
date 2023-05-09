@@ -150,37 +150,73 @@ class UserC {
 
           public function ReadAll(){
             $db = config::getConnexion();
-            $stmt = $db->prepare("SELECT * FROM user");
+            $stmt = $db->prepare("SELECT * FROM user ORDER BY fullname");
             $stmt->execute();
             $liste = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $liste;
         }
+        public function getUserByEmail2($email) {
+            $db = config::getConnexion();
+    
+            $stmt = $db->prepare( 'SELECT * FROM user WHERE email = :email LIMIT 1');
+            $stmt->bindValue(':email', $email);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        function updateUserResetToken($email, $token) {
+            // Connect to database
+            $db = config::getConnexion();    
+            // Update reset token in database
+            $stmt = $db->prepare("UPDATE user SET reset_token = :token WHERE email = :email");
+            $stmt->bindParam(":email", $email);
+            $stmt->bindParam(":token", $token);
+            $stmt->execute();
+        }
+        function updateUserPassword($token, $password) {
+            $db = config::getConnexion();    
+    
+            $stmt = $db->prepare("SELECT * FROM user WHERE reset_token = ?");
+            $stmt->execute([$token]);
+            $user = $stmt->fetch();
+        
+            if (!$user) {
+                return false; // Token not found
+            }
+        
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        
+            $stmt = $db->prepare("UPDATE user SET password = ?, reset_token = NULL WHERE id = ?");
+            $stmt->execute([$hashedPassword, $user['id']]);
+        
+            return true; // Password updated successfully
+        }
+      
+       
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     }
-
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
 
 

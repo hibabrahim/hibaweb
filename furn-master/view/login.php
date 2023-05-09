@@ -96,16 +96,19 @@ if (isset($_POST['login'])) {
 		if (empty($emailErr) && empty($passwordErr)) {
 			$userDao = new UserC();
 			if ($userDao->verifyCredentials($email, $password)){
+        
 				$token = bin2hex(random_bytes(32));
 				$user = $userDao->login($email);
 
 				// Set session variables
 				$_SESSION['email1'] = $email;
 				$_SESSION['token'] = $token;
+        $_SESSION['id'] = $userDao->verifyCredentials($email, $password);
 
-				
-					header('Location: loggedin.php');
-					exit();
+        header('Location: captcha.html');
+        exit();
+					//header('Location: loggedin.php');
+					//exit();
 				
 
 			} else {
@@ -114,6 +117,7 @@ if (isset($_POST['login'])) {
 			}
 		}
 	}
+
 ?>
 
 
@@ -166,7 +170,9 @@ if (isset($_POST['login'])) {
                 <i class="fab fa-linkedin-in"></i>
               </a>
             </div>
+            <a href="forget_password.php">Forgot your password?</a>
           </form>
+          
           <form method="POST" action="#" class="sign-up-form" enctype="multipart/form-data" id="signup_form">
   <h2 class="title">Sign up</h2>
   <div class="input-field">
@@ -206,8 +212,49 @@ if (isset($_POST['login'])) {
     <input name="profilePic" type="file"  />
   </div>
 
-  <button  type="submit" class="btn" name="submit">Sign up</button>
+  <button  type="submit" class="btn" name="submit" id="submit-btn" onclick="return checkPassword()">Sign up</button>
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+
+
+var submitBtn = document.getElementById('submit-btn');
+
+
+submitBtn.addEventListener('click', function(event) {
+  var nomInput = document.getElementById('fullname');
+  var nomValue = nomInput.value;
+
+
+  if (/^[a-zA-Z]+$/.test(nomValue)) {
+    // nom input is valid
+  } else {
+    event.preventDefault();
+    var nomErrorMsg = document.createElement('span');
+    nomErrorMsg.innerText = 'Le login  ne doit contenir que des lettres.';
+    nomInput.parentNode.insertBefore(nomErrorMsg, nomInput.nextSibling);
+  }
+
+
   
+
+
+  var emailInput = document.getElementById('email');
+  var emailValue = emailInput.value;
+
+
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+    // email input is valid
+  } else {
+    event.preventDefault();
+    var emailErrorMsg = document.createElement('span');
+    emailErrorMsg.innerText = 'Veuillez entrer une adresse email valide.';
+    emailInput.parentNode.insertBefore(emailErrorMsg, emailInput.nextSibling);
+  }
+});
+
+
+});
+</script>
 </form>
         </div>
       </div>
@@ -243,7 +290,7 @@ if (isset($_POST['login'])) {
 <footer>
 
 <script src="../view/js/app.js"></script>
-<script src="js/validation.js"></script>
+
 </footer>
     
   </body>

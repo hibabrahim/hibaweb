@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <link rel="stylesheet" type="text/css" href="../view/assets/css/captcha.css">
+</head>
+
+<body>
+    <div class="center">
+        <h1 id="captchaHeading">Captcha Validator </h1>
+        <div id="captchaBackground">
+            <form id="captchaForm" method="post">
+            <canvas id="captcha">captcha text</canvas>
+            <input id="textBox" type="text" name="text">
+            <div id="buttons">
+                <input id="submitButton" type="submit">
+                <button id="refreshButton" type="submit">Refresh</button>
+            </div>
+        </form>
+            <span id="output"></span>
+        </div>
+    </div>
+   
+    <script src="../view/js/captcha.js"></script>
+    
+    <script>
+        document.getElementById('submitButton').addEventListener('click', function(event) {
+            event.preventDefault(); // prevent the form from submitting normally
+            var textBoxValue = document.getElementById('textBox').value;
+            var captchaValue = document.getElementById('captcha').innerHTML;
+            if (textBoxValue === captchaValue) {
+                document.getElementById('captchaForm').submit(); // submit the form
+                window.location.href = 'loggedin.php'; // redirect to loggedin.php
+            } else {
+                document.getElementById('output').innerHTML = "Error: the value  is incorrect";
+            }
+        });
+    </script>
+            
+  
+</body> 
+</html>

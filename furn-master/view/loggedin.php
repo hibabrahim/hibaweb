@@ -20,7 +20,7 @@ if (!isset($_SESSION['token'])) {
 
 // Get the token from the session
 $token = $_SESSION['token'];
-
+echo $_SESSION['id'];
 // Validate the token
 if (!preg_match('/^[a-f0-9]{64}$/', $token)) {
     echo "Invalid token";
@@ -899,6 +899,7 @@ cancelBtn.addEventListener('click', hideConfirmationMsg);
 				                    <li class="scroll"><a href="#feature">features</a></li>
 				                    <li class="scroll"><a href="#blog">blog</a></li>
 				                    <li class="scroll"><a href="#newsletter">contact</a></li>
+				                      <li class="scroll"><a href="wichlist.php">wich list</a></li>
 				                </ul><!--/.nav -->
 								
 				            </div><!-- /.navbar-collapse -->
@@ -1039,9 +1040,12 @@ cancelBtn.addEventListener('click', hideConfirmationMsg);
 						<div class="col-md-3 col-sm-4">
 							<div class="single-new-arrival">
 								<div class="single-new-arrival-bg">
-									<img src="assets/images/collection/arrivals3.png" alt="new-arrivals images">
+									<img src="a.png" alt="new-arrivals images">
+
 									<div class="single-new-arrival-bg-overlay"></div>
+
 									<div class="new-arrival-cart">
+
 										<p>
 											<span class="lnr lnr-cart"></span>
 											<a href="#">add <span>to </span> cart</a>
@@ -1053,8 +1057,15 @@ cancelBtn.addEventListener('click', hideConfirmationMsg);
 									</div>
 								</div>
 								<h4><a href="#">wooden armchair</a></h4>
+								<form  method="POST" action="Ajouterarticle.php">
+                                 <input type="hidden" name="id" >
+                           <input type="hidden" name="id_article" value="5">
+                           <button type="submit" name="Add" value="" class="btn btn-danger">Add</button>
+                         
+                         </form>
 								<p class="arrival-product-price">$40.00</p>
 							</div>
+						
 						</div>
 						<div class="col-md-3 col-sm-4">
 							<div class="single-new-arrival">
